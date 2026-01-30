@@ -1,0 +1,25 @@
+{/* Categories */}
+<div className="bg-gray-50 p-4 rounded-lg">
+  <h3 className="font-medium text-gray-800 mb-4">Categories</h3>
+  <div className="space-y-2">
+    {jobCategories.map((cat) => (
+      <label key={cat.title} className="flex items-center">
+        <input
+          type="checkbox"
+          value={cat.title}
+          defaultChecked={Array.isArray(workerData?.category) ? workerData.category.includes(cat.title) : workerData?.category === cat.title}
+          className="w-4 h-4 text-teal-500 rounded"
+          id={`category-${cat.title}`}
+        />
+        <span className="ml-2 text-gray-700 text-sm">{cat.title}</span>
+      </label>
+    ))}
+  </div>
+</div>
+
+// Add this to handleSaveChanges after updateWorkerInfo call:
+const categoryCheckboxes = Array.from(e.currentTarget.querySelectorAll('input[id^="category-"]')) as HTMLInputElement[];
+const selectedCategories = categoryCheckboxes.filter(cb => cb.checked).map(cb => cb.value);
+if (selectedCategories.length > 0) {
+  await updateWorkerCategories(selectedCategories);
+}
